@@ -40,8 +40,7 @@ ax1.xaxis_date()
 
 # - Create candlestick graph
 candlestick_ohlc(ax1, df_ohlc.values, width = 2, colorup= "g")
-
-ax2.filzl_between(df_volume.index.map(mdates.date2num), df_volume.values, 0)
+ax2.fill_between(df_volume.index.map(mdates.date2num), df_volume.values, 0)
 
 # - Render the stock data plot
 plt.show()
