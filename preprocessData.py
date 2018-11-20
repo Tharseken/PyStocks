@@ -3,6 +3,10 @@ import pandas as pd
 from collections import Counter
 import pickle
 
+from sklearn import svm,  neighbors
+from sklearn import model_selection
+from sklearn.ensemble import VotingClassifier, RandomForestClassifier
+
 def process_data_for_labels(ticker):
     hm_days = 7
     df = pd.read_csv("sp500_joined_closes.csv", index_col= 0)
@@ -22,9 +26,9 @@ def buy_sell_hold(*args):
     requirement = 0.02
 
     for col in cols:
-        if col > requirement:
+        if col > 0.029:
             return 1
-        if col < -requirement:
+        if col < -0.027:
             return -1
     return 0
 
@@ -51,6 +55,24 @@ def extract_featuresets(ticker):
 
     return X,y,df
 
+def do_ml(ticker):
+    X, y, df = extract_featuresets(ticker)
+
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size = 0.25)
 
 
-extract_featuresets("XOM")
+    # clf = neighbors.KNeighborsClassifier()
+
+    clf = VotingClassifier([("lsvc", svm.LinearSVC()), ("knn", neighbors.KNeighborsClassifier()), ("rfor", RandomForestClassifier())])
+
+    clf.fit(X_train, y_train)
+
+    confidence = clf.score(X_test, y_test)
+    predictions = clf.predict(X_test)
+    print ("Accuracy: ", confidence)
+
+    print("Predicted spread: ", Counter(predictions))
+
+    return confidence
+
+do_ml("BAC")
