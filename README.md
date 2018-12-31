@@ -20,3 +20,9 @@ Libraries:
 
 ## Getting Started
 
+
+
+## Inspiration and Resources
+> Web Scraping with Python: Collecting Data from the Modern Web by Ryan Mitchell
+> Python for Data Analysis: Data Wrangling with Pandas, NumPy, and IPython by Wes McKinney
+> Sentdex Python Programming For Finance
